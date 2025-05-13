@@ -40,10 +40,10 @@ The results of this study provide a reference for future urban safety management
 # Project Structure
 The project repository contains the following files:
 
-1. project.ipynb: Main analysis file (Jupyter Notebook)
+1. project-201781208.ipynb: Main analysis file (Jupyter Notebook)
 
 2. crime_data_01.csv, crime_data_02.csv, crime_data_03.csv: Crime records for January to March 2025
 
-3. imd.xlsx: IMD 2019 dataset
+3. imd.xlsx: IMD 2019 dataset (worksheet name: IMD2019)
 
 4. leeds_LSOA_2011.shp: 2011 Leeds LSOA boundary shapefile
