@@ -14,22 +14,25 @@ To enhance the credibility and reproducibility of the study, all data used in th
 3. To match the 2011 LSOA version used in the IMD data, the shapefile of Leeds LSOA boundaries (2011) was downloaded from the Office for National Statistics and used as the geographic basis for spatial analysis.
 
 # Technologies Used
-During the cleaning of the four raw datasets, records related to the city of Leeds were first extracted. Functions such as isnull().sum(), info(), duplicated(), head() and describe() were used to check for missing values, duplicates, and outliers.
+Before cleaning the four original datasets, records related to the city of Leeds were first extracted from the IMD dataset using the district name. Then, the LSOA code field from the extracted IMD data was used to filter Leeds-specific crime records for January to March.
 
-Since each area could contain multiple valid crime records, duplicate rows were not deleted. Instead, the records were aggregated by LSOA. A heatmap was used to assist in checking for missing values. For missing LSOA values after aggregation, fillna(0) was used to fill in zeros, indicating no recorded crimes in those areas during that month. This approach reflects real-world conditions and helps ensure the completeness of subsequent spatial visualisation.
+The extracted data was checked using isnull().sum(), info(), duplicated(), head(), and describe() to identify missing values, duplicates, and outliers. Since each area may have multiple valid crime records, duplicate rows were not removed. Instead, crime counts were aggregated by LSOA to calculate total crimes for each area.
 
-After basic cleaning, the three months of crime data were merged with the IMD data using LSOA code as the common key. After merging, missing values were again filled with 0. The merged dataset retained the following fields: LSOA code, area_name, crime_Jan, crime_Feb, and crime_Mar. A new field, total_crime, was added to represent the total number of crimes from January to March. A boxplot was then created to help identify potential outliers.
+After initial cleaning, the three monthly crime datasets were merged with the IMD data using LSOA code as the common key. The merged table retained the following fields: LSOA code, area_name, crime_Jan, crime_Feb, and crime_Mar.
+
+The combined dataset was then rechecked for duplicates and statistical anomalies. A heatmap was created to visually inspect missing values. For LSOAs with missing crime records after aggregation, fillna(0) was used to represent zero crimes in those areas. This approach reflects real-world conditions and helps maintain completeness in spatial visualisation.
+
+A new column, total_crime, was created to indicate the total number of crimes from January to March. A boxplot was also drawn to identify potential outliers. Since high crime values can result from real-life events, these outliers were not removed.
 
 # Visualisation and Analysis Methods
-For non-spatial visualisation, a bar chart was used to show the relationship between the deprivation index (IMD Decile on the x-axis) and the average number of crimes (on the y-axis). Before plotting, the data was grouped by IMD Decile using groupby(), and the average crime count for each group was calculated. To improve readability and accommodate colour-blind users, the chart used the plasma colour palette, with colours ranging from dark to light to represent different levels of deprivation.
+For non-spatial visualisation, a bar chart was used to show the relationship between the Index of Multiple Deprivation (IMD Decile, x-axis) and the average number of crimes (y-axis). Before plotting, the data was grouped by IMD Decile using groupby(), and the mean crime count was calculated for each group. To improve readability and support accessibility for colour-blind users, the ‘plasma’ colour palette was applied, transitioning from dark to light to represent different levels of deprivation.
 
-For spatial visualisation, choropleth maps were created to display the spatial distribution of both total crime and deprivation across LSOAs in Leeds. To allow direct comparison, two maps were placed side by side: one showing the total crime count in the first quarter, and the other showing the IMD Decile distribution. Titles, legends, a compass, and a scale bar were added to enhance the interpretability of the maps.
-The two maps both used the BuPu (blue-purple) colour scheme, which is colour-blind-friendly. Additionally, the IMD Decile map was colour-reversed so that darker shades represent higher levels of deprivation (Decile = 1). This adjustment ensures visual consistency with the crime map and improves comparative clarity.
+For spatial visualisation, choropleth maps were used to display the spatial distribution of both variables. To better compare the spatial relationship between crime and deprivation, two side-by-side maps were created: one showing the total number of crimes per LSOA during the first quarter, and the other showing the IMD Decile distribution. Titles, legends, a north arrow, and a scale bar were added to enhance map readability and interpretation. Both maps used the BuPu (blue-purple) colour scheme for better visual contrast. The IMD Decile map used a reversed colour scale, where darker shades represent higher deprivation (Decile = 1), to visually align with the crime map.
 
-Overall, the results from both non-spatial and spatial visualisations indicate that lower deprivation indices (i.e. higher levels of deprivation) are associated with higher average crime levels
+Both the non-spatial and spatial visualisations show a clear trend: areas with lower deprivation indices (i.e., more deprived areas) tend to have higher average crime levels.
 
 # Modelling and Result Validation
-To further validate the visual findings, a Poisson regression model was used. The regression coefficient for IMD decile was -0.1386 with a p-value < 0.001, indicating a significant negative correlation between deprivation index and crime count.
+To further verify the results observed in the visualisations, a Poisson regression model was applied. The results showed that the regression coefficient for IMD decile was -0.1402, with a p-value of 0 (p < 0.001), indicating a significant negative relationship between deprivation level and crime count.
 
 # Conclusion and Practical Implications
 The results of this study provide a reference for future urban safety management in Leeds. The findings show that improving local economic and living conditions can help reduce crime rates and enhance the overall quality of life in communities.
